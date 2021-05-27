@@ -26,7 +26,7 @@ const Authenticate: React.FC<Props> = (props) => {
 }
 
 export const getCookie = (name: string, cookieString?: string): string | null | undefined => {
-    const val = (cookieString || document.cookie)?.match(
+    const val = (cookieString || document?.cookie)?.match(
         '(^|[^;]+)\\s*' + name + '\\s*=\\s*([^;]+)'
     );
     return val ? val.pop() : null;
