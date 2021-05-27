@@ -24,12 +24,11 @@ const useStyles = makeStyles((theme) => ({
         height: '100vh',
     },
     image: {
-        backgroundImage: 'url(https://source.unsplash.com/random)',
+        backgroundImage: 'url(/images/login-background.png)',
         backgroundRepeat: 'no-repeat',
-        backgroundColor:
-            theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+        backgroundColor: '#bbf9ff',
         backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundPosition: 'right',
     },
     paper: {
         margin: theme.spacing(8, 4),
@@ -48,6 +47,10 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    copyright: {
+        display: 'flex',
+        alignItems: 'center',
+    }
 }));
 
 const Home: React.FC = () => {
@@ -101,7 +104,6 @@ const Home: React.FC = () => {
                 <title>Login | RobinTax</title>
             </Head>
             <Grid container component="main" className={classes.root}>
-                <CssBaseline />
                 <Grid item xs={false} sm={4} md={7} lg={8} xl={3} className={classes.image} />
                 <Grid item xs={12} sm={8} md={5} lg={4} xl={9} component={Paper} elevation={6} square>
                     <div className={classes.paper}>
@@ -112,7 +114,7 @@ const Home: React.FC = () => {
                             <LockOutlined />
                         </Avatar>
                         <Typography component="h1" variant="h5">
-                            Login
+                            Login with Robinhood
                         </Typography>
                         <form className={classes.form} noValidate onSubmit={e => handleLogin(e)}>
                             <TextField
@@ -172,8 +174,10 @@ const Home: React.FC = () => {
                                     </Link>
                                 </Grid>
                             </Grid>
-                            <Box mt={5}>
-                                <Copyright /> RobinTax {(new Date()).getFullYear()}
+                            <Box mt={5} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+                                <Typography variant="subtitle1">
+                                    <Copyright/> | RobinTax {(new Date()).getFullYear()}
+                                </Typography>
                             </Box>
                         </form>
                     </div>
