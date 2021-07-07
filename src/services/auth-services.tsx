@@ -12,7 +12,7 @@ const Authenticate: React.FC<Props> = (props) => {
 
     useEffect(() => {
         setInterval(() => {
-            if (!getCookie(ROBINHOOD_TOKEN_COOKIE)) {
+            if (!getCookie(ROBINHOOD_TOKEN_COOKIE, document?.cookie)) {
                 router.push('/login?session_expired=true');
             }
         }, 2000);
@@ -26,7 +26,7 @@ const Authenticate: React.FC<Props> = (props) => {
 }
 
 export const getCookie = (name: string, cookieString?: string): string | null | undefined => {
-    const val = (cookieString || document?.cookie)?.match(
+    const val = cookieString?.match(
         '(^|[^;]+)\\s*' + name + '\\s*=\\s*([^;]+)'
     );
     return val ? val.pop() : null;

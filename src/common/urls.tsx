@@ -4,5 +4,6 @@ export const urls = {
     ROBINHOOD_ACCOUNTS: 'https://api.robinhood.com/accounts/',
     ROBINHOOD_PORTFOLIOS: (accountId: string) => `https://api.robinhood.com/portfolios/${accountId}`,
     ROBINHOOD_FORGOT_PASSWORD_LINK: 'https://robinhood.com/forgot_password',
-    ROBINHOOD_CHALLENGE_RESPONSE: (challengeId: string) => `https://api.robinhood.com/challenge/${challengeId}/respond/`
+    ROBINHOOD_CHALLENGE_RESPONSE: (challengeId: string) => `https://api.robinhood.com/challenge/${challengeId}/respond/`,
+    ROBINHOOD_ORDERS: 'https://api.robinhood.com/orders/'
 }
