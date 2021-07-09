@@ -4,6 +4,7 @@ import { NextPageContext } from 'next';
 import Head from 'next/head';
 import { AppBar, Button, makeStyles, Toolbar, Typography } from '@material-ui/core';
 import axios from 'axios';
+import Dashboard from './dashboard';
 
 const useStyles = makeStyles((theme) => ({
   spacer: {
@@ -25,11 +26,11 @@ const Home = () => {
     <Authenticate>
       <React.Fragment>
         <Head>
-          <title>Home | RobinTax</title>
+          <title>Home | Robintax</title>
         </Head>
         <AppBar>
           <Toolbar>
-            <Typography variant="h6">RobinTax</Typography>
+            <Typography variant="h6">Robintax</Typography>
             <div className={classes.spacer}></div>
             <Button onClick={logout}>Logout</Button>
           </Toolbar>
@@ -38,6 +39,7 @@ const Home = () => {
         <pre>
           {JSON.stringify(orders, null, 4)}
         </pre>
+        <Dashboard />
       </React.Fragment>
     </Authenticate>
   )
