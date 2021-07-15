@@ -3,12 +3,13 @@ import { useRouter } from 'next/router';
 import { Credentials } from '../src/common/types';
 import axios from 'axios';
 import { ROBINHOOD_TOKEN_COOKIE, ROBINHOOD_CHALLENGE_ID_HEADER } from '../src/common/constants';
-import { Avatar, Box, Button, CircularProgress, CssBaseline, Grid, Link, makeStyles, Paper, TextField, Typography } from '@material-ui/core';
-import { Copyright, LockOutlined } from '@material-ui/icons';
+import { Avatar, Box, Button, CircularProgress, CssBaseline, Grid, Link, makeStyles, Paper, TextField, Typography, Fab, Dialog } from '@material-ui/core';
+import { Copyright, LockOutlined, NotListedLocationOutlined } from '@material-ui/icons';
 import Head from 'next/head';
 import { NextPageContext } from 'next';
 import { getCookie } from '../src/services/auth-services';
 import { urls } from '../src/common/urls';
+import Privacy from './privacy';
 
 const useStyles = makeStyles((theme) => ({
     sessionExpired: {
@@ -24,17 +25,20 @@ const useStyles = makeStyles((theme) => ({
         height: '100vh',
     },
     image: {
-        backgroundImage: 'url(/images/login-background.png)',
+        backgroundImage: 'url(/images/robintax-login.png)',
         backgroundRepeat: 'no-repeat',
-        backgroundColor: '#bbf9ff',
+        backgroundColor: '#f2f8ee',
         backgroundSize: 'cover',
-        backgroundPosition: 'right',
+        backgroundPosition: 'center',
     },
     paper: {
-        margin: theme.spacing(8, 4),
+        margin: 'auto',
+        marginLeft: '0',
+        padding: '0 5%' 
+    },
+    rightpane: {
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
+        flexDirection: 'column'
     },
     avatar: {
         margin: theme.spacing(1),
@@ -49,7 +53,22 @@ const useStyles = makeStyles((theme) => ({
     },
     copyright: {
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'left',
+        marginLeft: '5%',
+        padding: '5px 0px'
+    },
+    floatright: {
+        position: 'absolute',
+        bottom: theme.spacing(2),
+        right: theme.spacing(2),
+    },
+    imageLogo: {
+        width: '10em'
+    },
+    logo: {
+    position: 'absolute',
+    top: theme.spacing(2),
+    left: theme.spacing(2),
     }
 }));
 
@@ -65,6 +84,7 @@ const Home: React.FC = () => {
     const [challenge, setChallenge] = useState<any>();
     const [challengeResponse, setChallengeResponse] = useState<string>();
     const [deviceToken, setDeviceToken] = useState<string>();
+    const [toggleModal, setToggleModal] = useState(false);
 
     useEffect(() => {
         if (credentials?.challenge_type) {
@@ -137,40 +157,55 @@ const Home: React.FC = () => {
         }
     }
 
+    const handleModalOpen = () => {
+        setToggleModal(true);
+    }
+
+    const handleModalClose = () => {
+        setToggleModal(false);
+    }
+
     return (
         <React.Fragment>
             <Head>
-                <title>Login | RobinTax</title>
+                <title>Log In | Robintax</title>
             </Head>
             <Grid container component="main" className={classes.root}>
-                <Grid item xs={false} sm={4} md={7} lg={8} xl={3} className={classes.image} />
-                <Grid item xs={12} sm={8} md={5} lg={4} xl={9} component={Paper} elevation={6} square>
+                <Grid item xs={12} sm={7} md={6} lg={6} xl={6} className={classes.image} />
+                <Grid item xs={12} sm={5} md={6} lg={6} xl={6} className={classes.rightpane}>
+                {/* <Typography component="h1" variant="h4">
+                    Welcome to RobinTax
+                </Typography> */}
                     <div className={classes.paper}>
+                        <div className={classes.logo}>
+                            <img className={classes.imageLogo} src="/images/robintax-logo.png" />
+                        </div>
                         { router.query.session_expired === 'true' &&
                             <p className={classes.sessionExpired}>Session expired. Please login again.</p>
                         }
-                        <Avatar className={classes.avatar}>
-                            <LockOutlined />
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
-                            Login with Robinhood
-                        </Typography>
                         <form className={classes.form} noValidate onSubmit={e => handleLogin(e)}>
                             {challengeTypes ?
                                 <Fragment>
-                                    <Typography component="h1" variant="h5">
+                                    <Typography component="h1" variant="h5" gutterBottom>
                                         Verify Your Identity
                                     </Typography>
-                                    <Typography component="p" variant="body1">
+                                    <Typography component="p" variant="body1" gutterBottom>
                                         Robinhood is sending you a code to verify your identity. What is the best way to reach you?
                                     </Typography>
                                     {Object.keys(challengeTypes).map(typeKey =>
-                                        <Button key={typeKey} type="button" onClick={() => sendChallenge(typeKey)}>{challengeTypes[typeKey]}</Button>
+                                        <Button 
+                                            key={typeKey} 
+                                            type="button" 
+                                            color="primary" 
+                                            variant="contained"
+                                            className={classes.submit} 
+                                            onClick={() => sendChallenge(typeKey)}>{challengeTypes[typeKey]}
+                                        </Button>
                                     )}
                                 </Fragment>
                                 : showChallenge ?
                                 <Fragment>
-                                    <Typography component="p" variant="body1">
+                                    <Typography component="p" variant="body1" gutterBottom>
                                         Enter your verification code:
                                     </Typography>
                                     <TextField
@@ -185,10 +220,16 @@ const Home: React.FC = () => {
                                         autoFocus
                                         onChange={e => handleChallengeResponseChange(e)}
                                     />
-                                    <Button type="button" onClick={respondToChallenge}>Send</Button>
+                                    <Button type="button" color="primary" variant="contained" className={classes.submit} onClick={respondToChallenge}>Send</Button>
                                 </Fragment>
                                 :
                                 <Fragment>
+                                    <Avatar className={classes.avatar}>
+                                        <LockOutlined />
+                                    </Avatar>
+                                    <Typography component="h5" variant="h5">
+                                        Login with Robinhood
+                                    </Typography>
                                     <TextField
                                         variant="outlined"
                                         margin="normal"
@@ -248,15 +289,21 @@ const Home: React.FC = () => {
                                     </Grid>
                                 </Fragment>
                             }
-                            <Box mt={5} display={'flex'} justifyContent={'center'} alignItems={'center'}>
-                                <Typography variant="subtitle1">
-                                    <Copyright/> | RobinTax {(new Date()).getFullYear()}
-                                </Typography>
-                            </Box>
                         </form>
                     </div>
+                    <Box mt={5} className={classes.copyright}>
+                        <Typography variant="subtitle1">
+                            <Copyright/> | Robintax - Centri Solutions {(new Date()).getFullYear()}
+                        </Typography>
+                    </Box>
+                    <Fab size="small" color="primary" className={classes.floatright} onClick={handleModalOpen}>
+                        <NotListedLocationOutlined />
+                    </Fab>
                 </Grid>
             </Grid>
+            <Dialog fullWidth={true} open={toggleModal} onClose={handleModalClose}>
+                <Privacy />
+            </Dialog>
         </React.Fragment>
     )
 }
