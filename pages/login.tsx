@@ -4,12 +4,13 @@ import { Credentials } from '../src/common/types';
 import axios from 'axios';
 import { ROBINHOOD_TOKEN_COOKIE, ROBINHOOD_CHALLENGE_ID_HEADER } from '../src/common/constants';
 import { Avatar, Box, Button, CircularProgress, CssBaseline, Grid, Link, makeStyles, Paper, TextField, Typography, Fab, Dialog } from '@material-ui/core';
-import { Copyright, LockOutlined, NotListedLocationOutlined } from '@material-ui/icons';
+import { Copyright, LockOutlined, NotListedLocationOutlined, InfoOutlined } from '@material-ui/icons';
 import Head from 'next/head';
 import { NextPageContext } from 'next';
 import { getCookie } from '../src/services/auth-services';
 import { urls } from '../src/common/urls';
 import Privacy from './privacy';
+import ArticleCarousel from './components/carousel';
 
 const useStyles = makeStyles((theme) => ({
     sessionExpired: {
@@ -173,9 +174,7 @@ const Home: React.FC = () => {
             <Grid container component="main" className={classes.root}>
                 <Grid item xs={12} sm={7} md={6} lg={6} xl={6} className={classes.image} />
                 <Grid item xs={12} sm={5} md={6} lg={6} xl={6} className={classes.rightpane}>
-                {/* <Typography component="h1" variant="h4">
-                    Welcome to RobinTax
-                </Typography> */}
+                <ArticleCarousel />
                     <div className={classes.paper}>
                         <div className={classes.logo}>
                             <img className={classes.imageLogo} src="/images/robintax-logo.png" />
@@ -297,7 +296,7 @@ const Home: React.FC = () => {
                         </Typography>
                     </Box>
                     <Fab size="small" color="primary" className={classes.floatright} onClick={handleModalOpen}>
-                        <NotListedLocationOutlined />
+                        <InfoOutlined />
                     </Fab>
                 </Grid>
             </Grid>
