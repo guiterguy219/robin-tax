@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
         height: '100%'
     },
     title: {
-        fontWeight: '500'
+        fontWeight: 500
     }
   }));
 
@@ -43,7 +43,7 @@ const Banner = (props: any) => {
                     {props.item.Caption}
                 </Typography>
                 <Link 
-                    component="button"
+                    component="a"
                     href={props.item.Items[0].href}
                     target="_blank"
                     rel="noopener"
